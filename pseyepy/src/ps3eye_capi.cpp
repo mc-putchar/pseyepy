@@ -29,6 +29,7 @@
 
 #include "ps3eye_capi.h"
 #include "ps3eye.h"
+#include "Python.h"
 
 #include <list>
 #include <map>
@@ -137,7 +138,7 @@ ps3eye_open(int id, int width, int height, int fps, ps3eye_format outputFormat)
     }
 
     ps3eye_t *newCam = new ps3eye_t(id, ps3eye_context->devices[id], width, height, fps, outputFormat); // is stored in opened_devices
-
+    (void)newCam;
     return true;
 }
 
@@ -185,7 +186,9 @@ ps3eye_grab_frame(int id, unsigned char* frame)
         return 0;
     }
 
-	timestamp = eye->eye->getFrame(frame);
+    Py_BEGIN_ALLOW_THREADS
+	    timestamp = eye->eye->getFrame(frame);
+    Py_END_ALLOW_THREADS
 
     return timeval2int(timestamp); // timestamp is in microseconds
 }

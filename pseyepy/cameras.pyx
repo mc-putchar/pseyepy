@@ -1,4 +1,5 @@
 # distutils: language=c++
+# cython: language_level=2
 
 from libcpp cimport bool as cbool
 import atexit
